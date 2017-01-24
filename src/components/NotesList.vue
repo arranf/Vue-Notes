@@ -1,4 +1,5 @@
 import {updateActiveNote} from '../vuex/actions'
+
 <template>
   <div id="notes-list">
     <div id="list-header">

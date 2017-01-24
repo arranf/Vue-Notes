@@ -22,7 +22,7 @@ export default {
             return (this.$store.state.activeNote == undefined) ? false :this.$store.state.activeNote.favourite
         },
         isCurrentActiveAccessible(){
-            return (this.$store.state.displayingFavourites && this.$store.state.activeNote !== undefined && this.$store.state.activeNote.favourite || !this.$store.state.displayingFavourites)
+            return (this.$store.state.activeNote !== undefined && ( (this.$store.state.displayingFavourites && this.$store.state.activeNote.favourite) || !this.$store.state.displayingFavourites ) && this.$store.state.notes.length > 0 )
         }
     }
 }
