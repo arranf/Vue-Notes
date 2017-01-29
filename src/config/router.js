@@ -14,15 +14,15 @@ import Auth from '../components/Auth'
 // so I check query string if it exists
 const checkFromAuth = (to, from, next) => {
   const query = window.location.search.substr(1).split('=')
-  // console.log(query)
   if (query[0] === 'mode') {
     next({
       path: '/auth',
       query: { mode: query[1] },
     })
-  } else {
-    next()
+  } else if (store.getters.user) {
+    next('/app')
   }
+  next('/auth')
 }
 
 const guard = (to, from, next) => {
