@@ -10,13 +10,15 @@ Vue.use(Vuex)
 const state = {
     notes: [],
     activeNote: {text: 'Why not start typing here?', favourite: false},
-    displayingFavourites: false
+    displayingFavourites: false,
+    user: null,
+    firebaseApp: null,
+    firebaseUIApp: null
 }
 
 export default new Vuex.Store({
     state,
     mutations,
     getters,
-    actions,
-    strict:true
+    actions
 })

@@ -28,3 +28,15 @@ export const toggleFavourite = (context) => {
 export const toggleFavouriteView = ({ commit }) => {
     commit('TOGGLE_FAVOURITE_VIEW')
 }
+
+export const setUser = ({ commit }, user) => {
+  commit('SET_USER', user)
+}
+
+export const setFirebaseApp = ({commit}, firebaseApp) => {
+  commit('SET_FIREBASE_APP', firebaseApp)
+}
+
+export const setFirebaseUIApp =  ({commit}, firebaseUIApp) => {
+  commit('SET_FIREBASE_UI_APP', firebaseUIApp)
+}
