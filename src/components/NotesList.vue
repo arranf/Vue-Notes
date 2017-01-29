@@ -9,7 +9,7 @@ import {updateActiveNote} from '../vuex/actions'
         <div class="btn-group" role="group">
           <button type="button" class="btn btn-default"
             @click="toggleFavouriteView()"
-            :class="{active: showAll}">
+            :class="{active: !displayingFavourites}">
             All Notes
           </button>
         </div>
@@ -17,7 +17,7 @@ import {updateActiveNote} from '../vuex/actions'
         <div class="btn-group" role="group">
           <button type="button" class="btn btn-default"
             @click="toggleFavouriteView()"
-            :class="[{active: !showAll}]">
+            :class="[{active: displayingFavourites}]">
             Favorites
           </button>
         </div>
@@ -49,21 +49,8 @@ export default {
             'updateActiveNote', 'toggleFavouriteView'
         ]),
     computed: {
-        ...mapGetters(['favouriteNotes']),
-        notes() {
-            if (this.showAll){
-                return this.$store.state.notes
-            }
-            else {
-                return this.favouriteNotes
-            }
-        },
-        activeNote() {
-            return this.$store.state.activeNote
-        },
-        showAll() {
-            return !this.$store.state.displayingFavourites
         }
+        ...mapGetters(['favouriteNotes', 'activeNote', 'notes', 'displayingFavourites']),
     }
 }
 </script>

@@ -20,7 +20,7 @@ export const updateActiveNote = ({ commit }, note) => {
 }
 
 export const toggleFavourite = (context) => {
-    if (context.state.displayingFavourites && context.state.activeNote.favourite || !context.state.displayingFavourites){
+    if (context.getters.isCurrentActiveAccessible){
         context.commit('TOGGLE_FAVOURITE_NOTE')
     }
 }

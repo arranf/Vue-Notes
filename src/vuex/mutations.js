@@ -20,7 +20,9 @@ export const DELETE_NOTE = (state) => {
 }
 
 export const TOGGLE_FAVOURITE_NOTE = (state) => {
-  state.activeNote.favourite = !state.activeNote.favourite
+  if (state.activeNote != null){
+    state.activeNote.favourite = !state.activeNote.favourite
+  }
 }
 
 export const SET_ACTIVE_NOTE = (state, note) => {
