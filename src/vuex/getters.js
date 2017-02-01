@@ -5,15 +5,11 @@ export const displayingFavourites = state => state.displayingFavourites
 export const user = state => state.user
 
 export const userId = state => {
-  state.user == null ? '' : state.user.uid
+  return state.user == null ? '' : state.user.uid
 }
 
 export const isCurrentFavourite = state => {
   return state.activeNote != null && state.activeNote.favourite
-}
-
-export const favouriteNotes = state => {
-  return state.notes.filter( note => note.favourite )
 }
 
 export const isCurrentActiveAccessible = state => {
@@ -21,7 +17,7 @@ export const isCurrentActiveAccessible = state => {
 }
 
 export const notes = state => {
-  return state.displayingFavourites ? state.favouriteNotes : state.notes
+  return state.displayingFavourites ? state.notes.filter( note => note.favourite ) : state.notes
 }
 
 

@@ -40,7 +40,7 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
-import { notesRef } from '../firebase/firebase-config'
+import { getRef } from 'src/firebase/firebase-config'
 
 export default {
     methods:
@@ -50,8 +50,11 @@ export default {
     computed: {
         ...mapGetters(['favouriteNotes', 'activeNote', 'userId', 'displayingFavourites', 'notes'])
     },
-    firebase: {
-        notes: notesRef
+    created() {
+      if (this.userId) {
+        this.$bindAsArray('notes', getRef('users/' + this.userId + '/notes'))
+      }
     }
+
 }
 </script>

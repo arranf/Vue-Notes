@@ -15,3 +15,7 @@ export const SET_USER = (state, user) => {
   // console.log(user)
   state.user = user
 }
+
+export const RESET_USER = (state) => {
+  state.user = null
+}

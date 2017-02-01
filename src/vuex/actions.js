@@ -1,11 +1,12 @@
 /**
  * Created by arran on 30/01/17.
  */
+import store from 'src/vuex/store'
+import { getRef } from 'src/firebase/firebase-config'
 import firebase from 'firebase'
 
-import {notesRef} from '../firebase/firebase-config'
-
 export const editNote = (context, e) => {
+  const notesRef = getRef('users/' + store.getters.userId + '/notes')
   let updatedNote = {
     text: e.target.value,
     favourite: context.getters.activeNote.favourite
@@ -24,6 +25,7 @@ export const toggleFavouriteView = ({ commit }) => {
 
 
 export const addNote = (context) => {
+  const notesRef = getRef('users/' + store.getters.userId + '/notes')
   const changeState = () => {
     if (context.getters.displayingFavourites){
       context.commit('TOGGLE_FAVOURITE_VIEW')
@@ -41,6 +43,7 @@ export const addNote = (context) => {
 }
 
 export const toggleFavourite = function (context) {
+  const notesRef = getRef('users/' + store.getters.userId + '/notes')
   if (context.getters.isCurrentActiveAccessible) {
     let updatedNote = {
       text: context.getters.activeNote.text,
@@ -52,6 +55,7 @@ export const toggleFavourite = function (context) {
 }
 
 export const deleteNote = ( context ) => {
+  const notesRef = getRef('users/' + store.getters.userId + '/notes')
   const key = context.getters.activeNote['.key']
   let index = context.state.notes.indexOf(context.getters.activeNote) -1
   if (index < 0){
@@ -59,3 +63,31 @@ export const deleteNote = ( context ) => {
   }
   notesRef.child(key).remove().then(context.state.activeNote = context.state.notes[index])
 }
+
+export const logOut = (context) => {
+    firebase.auth().signOut().then(() => {
+      // Sign-out successful.
+      window.location.reload()
+    }, (error) => {
+      // An error happened.
+      console.log(error)
+      window.location.reload()
+    })
+}
+
+export const authUser = (onFail) => {
+  return new Promise((resolve, reject) => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user != null || store.getters.user){
+        store.commit('SET_USER', user)
+      }
+      else {
+        onFail()
+      }
+      resolve(user)
+    }, (error) => {
+      console.log(error)
+    })
+  })
+}
+
