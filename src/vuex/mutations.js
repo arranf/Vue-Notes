@@ -29,20 +29,16 @@ export const SET_ACTIVE_NOTE = (state, note) => {
   state.activeNote = note
 }
 
+export const FIND_ACTIVE_NOTE = (state, key) => {
+    let toBeActive = state.notes.find( note => note['.key'] === key)
+    state.activeNote = toBeActive
+}
+
 export const TOGGLE_FAVOURITE_VIEW = (state) => {
   state.displayingFavourites = !state.displayingFavourites
 }
 
 export const SET_USER = (state, user) => {
+  // console.log(user)
   state.user = user
-}
-
-export const SET_FIREBASE_APP = (state, firebaseApp) => {
-  console.log('SET_FB_APP')
-  state.firebaseApp = firebaseApp
-}
-
-export const SET_FIREBASE_UI_APP = (state, firebaseUIApp) => {
-  console.log('SET_FB_UI_APP')
-  state.firebaseUIApp = firebaseUIApp
 }

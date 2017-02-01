@@ -3,11 +3,11 @@
  */
 import VueRouter from 'vue-router'
 
-import store from '../vuex/store'
+import store from './vuex/store'
 
-import App from '../components/App'
-import Hello from '../components/Hello'
-import Auth from '../components/Auth'
+import App from './components/App'
+import Hello from './components/Hello'
+import Auth from './components/Auth'
 
 
 // redirect from accountchooser is losing hash and redirects to the root

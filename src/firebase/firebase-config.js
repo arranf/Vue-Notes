@@ -1,8 +1,7 @@
 /**
- * Created by arran on 29/01/17.
+ * Created by arran on 30/01/17.
  */
 import firebase from 'firebase'
-import firebaseui from 'firebaseui'
 
 const config = {
   apiKey: "AIzaSyD0atCD0tCK8Wqp26Hs5rbaNZW7FtcZp7U",
@@ -10,6 +9,11 @@ const config = {
   databaseURL: "https://generic-notes.firebaseio.com",
   storageBucket: "generic-notes.appspot.com",
   messagingSenderId: "674872281364"
-};
-export const firebaseApp = firebase.initializeApp(config)
-export const firebaseUIApp = new firebaseui.auth.AuthUI(firebase.auth(firebaseApp))
+}
+const firebaseApp = firebase.initializeApp(config)
+const db = firebaseApp.database()
+
+
+export const notesRef = db.ref('users').child('5YAGEKOoiDQKr8BoVD9au59ygS13').child('notes')
+
+export default db

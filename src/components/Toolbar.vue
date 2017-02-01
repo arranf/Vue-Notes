@@ -1,7 +1,7 @@
 <template>
   <div id="toolbar">
-    <i @click="addNote" class="glyphicon glyphicon-plus plus"></i>
-    <i @click="toggleFavourite"
+    <i @click="addNote()" class="glyphicon glyphicon-plus plus"></i>
+    <i @click="toggleFavourite()"
       class="glyphicon glyphicon-star"
       :class="[{starred: isCurrentFavourite}, {star: isCurrentActiveAccessible}, {disabled: !isCurrentActiveAccessible}]" :disabled="isCurrentActiveAccessible ? false : true"></i>
     <i @click="deleteNote"
@@ -14,12 +14,13 @@
 <script>
 import {mapActions, mapGetters}  from 'vuex'
 import firebase from 'firebase'
-import router from '../config/router'
+import router from '../router'
 
 export default {
+
     methods: {
       ...mapActions([
-        'addNote', 'deleteNote', 'toggleFavourite', 'deleteNote, signOut'
+        'deleteNote', 'deleteNote', 'signOut', 'addNote', 'toggleFavourite'
       ]),
       signOut() {
         firebase.auth().signOut().then(this.onSignOut, this.onError);

@@ -1,5 +1,3 @@
-import {updateActiveNote} from '../vuex/actions'
-
 <template>
   <div id="notes-list">
     <div id="list-header">
@@ -26,14 +24,14 @@ import {updateActiveNote} from '../vuex/actions'
     <!-- render notes in a list -->
     <div class="container">
       <div class="list-group">
-        <a v-for="note in notes"
+        <button v-for="note in notes"
           class="list-group-item" href="#"
           :class="{active: activeNote === note}"
           @click="updateActiveNote(note)">
           <h4 class="list-group-item-heading">
             {{note.text.trim().substring(0, 30)}}
           </h4>
-        </a>
+        </button>
       </div>
     </div>
 
@@ -42,6 +40,7 @@ import {updateActiveNote} from '../vuex/actions'
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
+import { notesRef } from '../firebase/firebase-config'
 
 export default {
     methods:
@@ -49,8 +48,10 @@ export default {
             'updateActiveNote', 'toggleFavouriteView'
         ]),
     computed: {
-        }
-        ...mapGetters(['favouriteNotes', 'activeNote', 'notes', 'displayingFavourites']),
+        ...mapGetters(['favouriteNotes', 'activeNote', 'userId', 'displayingFavourites', 'notes'])
+    },
+    firebase: {
+        notes: notesRef
     }
 }
 </script>

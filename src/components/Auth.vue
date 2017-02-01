@@ -9,8 +9,9 @@
 
 
 <script>
-  import { mapGetters } from 'vuex'
   import firebase from 'firebase'
+  import firebaseui from 'firebaseui'
+
   const uiConfig = {
     signInSuccessUrl: '/#/app',
     signInOptions: [
@@ -20,21 +21,19 @@
 //      firebase.auth.GithubAuthProvider.PROVIDER_ID,
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
     ],
-    tosUrl: '/#tos',
-  };
+    tosUrl: '/#/tos',
+  }
+
   export default {
     name: 'auth',
-    computed: {
-      ...mapGetters({
-        firebaseUIApp: 'firebaseUIApp',
-      }),
-    },
     mounted() {
-      this.firebaseUIApp.start('#firebaseui-auth-container', uiConfig)
+      this.ui = new firebaseui.auth.AuthUI(firebase.auth())
+      firebase.auth().onAuthStateChanged(user => this.$store.commit('SET_USER', user))
+      this.ui.start('#firebaseui-auth-container', uiConfig)
     },
     destroyed() {
-      this.firebaseUIApp.reset()
-    },
+      this.ui.reset()
+    }
   }
 </script>
 

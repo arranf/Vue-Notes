@@ -1,15 +1,9 @@
-// Actions can be asychronous, Mutations MUST be synchronous. Do Ajax here
+/**
+ * Created by arran on 30/01/17.
+ */
+import firebase from 'firebase'
 
-export const addNote = (context) => {
-    if (context.state.displayingFavourites){
-        context.commit('TOGGLE_FAVOURITE_VIEW')
-    }
-    context.commit('ADD_NOTE')
-}
-
-export const deleteNote = ({ commit }) => {
-    commit('DELETE_NOTE')
-}
+import {notesRef} from '../firebase/firebase-config'
 
 export const editNote = ({ commit}, e) => {
     commit('EDIT_NOTE', e.target.value)
@@ -19,24 +13,44 @@ export const updateActiveNote = ({ commit }, note) => {
     commit ('SET_ACTIVE_NOTE', note)
 }
 
-export const toggleFavourite = (context) => {
-    if (context.getters.isCurrentActiveAccessible){
-        context.commit('TOGGLE_FAVOURITE_NOTE')
-    }
-}
-
 export const toggleFavouriteView = ({ commit }) => {
-    commit('TOGGLE_FAVOURITE_VIEW')
+  commit('TOGGLE_FAVOURITE_VIEW')
 }
 
-export const setUser = ({ commit }, user) => {
-  commit('SET_USER', user)
+
+export const addNote = (context) => {
+  const changeState = () => {
+    if (context.getters.displayingFavourites){
+      context.commit('TOGGLE_FAVOURITE_VIEW')
+    }
+  }
+
+  let newNote = {
+    text: '✍ ...',
+    favourite: false
+  }
+
+  const error = () => console.log('Error adding note')
+
+  notesRef.push(newNote).then(changeState, error)
 }
 
-export const setFirebaseApp = ({commit}, firebaseApp) => {
-  commit('SET_FIREBASE_APP', firebaseApp)
+export const toggleFavourite = function (context) {
+  if (context.getters.isCurrentActiveAccessible) {
+    let updatedNote = {
+      text: context.getters.activeNote.text,
+      favourite: !context.getters.activeNote.favourite
+    }
+    notesRef.child(context.getters.activeNote['.key']).update(updatedNote).then(
+      context.commit('FIND_ACTIVE_NOTE',context.getters.activeNote['.key']))
+  }
 }
 
-export const setFirebaseUIApp =  ({commit}, firebaseUIApp) => {
-  commit('SET_FIREBASE_UI_APP', firebaseUIApp)
+export const deleteNote = ( context ) => {
+  const key = context.getters.activeNote['.key']
+  let index = context.state.notes.indexOf(context.getters.activeNote) -1
+  if (index < 0){
+    index = 0
+  }
+  notesRef.child(key).remove().then(context.state.activeNote = context.state.notes[index])
 }
