@@ -1,11 +1,15 @@
 import Vue from 'vue'
+import VueRouter from 'vue-router'
+
 import store from './vuex/store'
-import App from './components/App.vue'
+import router from './router'
+
+require('bootstrap/dist/css/bootstrap.css')
+
+Vue.use(VueRouter)
 
 /* eslint-disable no-new */
 new Vue({
   store,
-  components: { App },
-  el: '#app',
-  template: '<App/>',
-})
+  router
+}).$mount('#app')

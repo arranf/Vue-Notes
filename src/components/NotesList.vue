@@ -1,5 +1,3 @@
-import {updateActiveNote} from '../vuex/actions'
-
 <template>
   <div id="notes-list">
     <div id="list-header">
@@ -9,7 +7,7 @@ import {updateActiveNote} from '../vuex/actions'
         <div class="btn-group" role="group">
           <button type="button" class="btn btn-default"
             @click="toggleFavouriteView()"
-            :class="{active: showAll}">
+            :class="{active: !displayingFavourites}">
             All Notes
           </button>
         </div>
@@ -17,7 +15,7 @@ import {updateActiveNote} from '../vuex/actions'
         <div class="btn-group" role="group">
           <button type="button" class="btn btn-default"
             @click="toggleFavouriteView()"
-            :class="[{active: !showAll}]">
+            :class="[{active: displayingFavourites}]">
             Favorites
           </button>
         </div>
@@ -26,14 +24,14 @@ import {updateActiveNote} from '../vuex/actions'
     <!-- render notes in a list -->
     <div class="container">
       <div class="list-group">
-        <a v-for="note in notes"
+        <button v-for="note in notes"
           class="list-group-item" href="#"
           :class="{active: activeNote === note}"
           @click="updateActiveNote(note)">
           <h4 class="list-group-item-heading">
             {{note.text.trim().substring(0, 30)}}
           </h4>
-        </a>
+        </button>
       </div>
     </div>
 
@@ -42,6 +40,7 @@ import {updateActiveNote} from '../vuex/actions'
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
+import { getRef } from 'src/firebase/firebase-config'
 
 export default {
     methods:
@@ -49,22 +48,13 @@ export default {
             'updateActiveNote', 'toggleFavouriteView'
         ]),
     computed: {
-        ...mapGetters(['favouriteNotes']),
-        notes() {
-            if (this.showAll){
-                return this.$store.state.notes
-            }
-            else {
-                return this.favouriteNotes
-            }
-        },
-        activeNote() {
-            return this.$store.state.activeNote
-        },
-        showAll() {
-            return !this.$store.state.displayingFavourites
-        }
+        ...mapGetters(['favouriteNotes', 'activeNote', 'userId', 'displayingFavourites', 'notes'])
+    },
+    created() {
+      if (this.userId) {
+        this.$bindAsArray('notes', getRef('users/' + this.userId + '/notes'))
+      }
     }
-}
 
+}
 </script>

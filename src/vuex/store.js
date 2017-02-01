@@ -1,22 +1,27 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VuexFire from 'vuexfire'
 
 import * as actions from './actions'
 import * as getters from './getters'
 import * as mutations from './mutations'
 
 Vue.use(Vuex)
+Vue.use(VuexFire)
 
 const state = {
-    notes: [],
-    activeNote: {text: 'Why not start typing here?', favourite: false},
-    displayingFavourites: false
+    notes: null,
+    activeNote: null,
+    displayingFavourites: false,
+    user: null
 }
 
 export default new Vuex.Store({
     state,
-    mutations,
+    mutations: {
+      ...VuexFire.mutations,
+      ...mutations
+    },
     getters,
-    actions,
-    strict:true
+    actions
 })

@@ -1,34 +1,67 @@
 <template>
   <div id="toolbar">
-    <i @click="addNote" class="glyphicon glyphicon-plus plus"></i>
-    <i @click="toggleFavourite"
+    <i @click="addNote()" class="glyphicon glyphicon-plus plus"></i>
+    <i @click="toggleFavourite()"
       class="glyphicon glyphicon-star"
-      :class="[{starred: (isFavourite === undefined) ? false : isFavourite}, {star: isCurrentActiveAccessible}, {disabled: !isCurrentActiveAccessible}]"></i>
+      :class="[{starred: isCurrentFavourite}, {star: isCurrentActiveAccessible}, {disabled: !isCurrentActiveAccessible}]" :disabled="isCurrentActiveAccessible ? false : true"></i>
     <i @click="deleteNote"
     class="glyphicon glyphicon-remove"
-    :class="[{remove: isCurrentActiveAccessible}, {disabled: !isCurrentActiveAccessible}]"></i>
+    :class="[{remove: isCurrentActiveAccessible}, {disabled: !isCurrentActiveAccessible}]" :disabled="isCurrentActiveAccessible ? false : true"></i>
+    <i @click="signOut" class="glyphicon glyphicon-off signOut bottom"></i>
   </div>
 </template>
 
 <script>
-import {mapActions}  from 'vuex'
+import {mapActions, mapGetters}  from 'vuex'
+import firebase from 'firebase'
+import router from '../router'
 
 export default {
-    methods: mapActions([
-        'addNote', 'deleteNote', 'toggleFavourite', 'deleteNote'
-    ]),
+
+    methods: {
+      ...mapActions([
+        'deleteNote', 'deleteNote', 'signOut', 'addNote', 'toggleFavourite'
+      ]),
+      signOut() {
+        firebase.auth().signOut().then(this.onSignOut, this.onError);
+      },
+      onSignOut() {
+        console.log('onSignOut');
+        router.push({path: '/', query: {ref: 'signout'}})
+      },
+      onError() {
+        console.error('onError');
+      }
+    },
     computed: {
-        isFavourite() {
-            return (this.$store.state.activeNote == undefined) ? false :this.$store.state.activeNote.favourite
-        },
-        isCurrentActiveAccessible(){
-            return (this.$store.state.activeNote !== undefined && ( (this.$store.state.displayingFavourites && this.$store.state.activeNote.favourite) || !this.$store.state.displayingFavourites ) && this.$store.state.notes.length > 0 )
-        }
+      ...mapGetters(['isCurrentFavourite', 'isCurrentActiveAccessible'])
     }
 }
 </script>
 
-<style>
+<style scoped>
+
+#toolbar {
+  float: left;
+  width: 80px;
+  height: 100%;
+  background-color: #30414D;
+  color: #767676;
+  padding: 35px 25px 25px 25px;
+}
+
+i {
+  font-size: 30px;
+  margin-bottom: 35px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.5s ease;
+}
+
+i:hover:enabled {
+  opacity: 1;
+}
+
 .plus:hover {
     color: #37AB76;
 }
@@ -53,5 +86,17 @@ export default {
 .disabled {
     opacity: 0.5 !important;
 }
+
+.signOut:hover {
+  color: #faf6fb;
+}
+
+  .bottom {
+    position: absolute;
+    top: auto;
+    bottom: 0;
+  }
+
+
 
 </style>
