@@ -29,6 +29,7 @@
           :class="{active: activeNote === note}"
           @click="updateActiveNote(note)">
           <h4 class="list-group-item-heading">
+            <i v-if="note.favourite" class="glyphicon glyphicon-star star"></i>
             {{note.text.trim().substring(0, 30)}}
           </h4>
         </button>
@@ -58,3 +59,9 @@ export default {
 
 }
 </script>
+
+<style scoped>
+  .star {
+    color: #F7AE4F;
+  }
+</style>
