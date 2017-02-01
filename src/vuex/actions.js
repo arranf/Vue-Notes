@@ -75,13 +75,14 @@ export const logOut = (context) => {
     })
 }
 
-export const authUser = (onFail) => {
+export const authUser = (onFail, onSuccess) => {
   return new Promise((resolve, reject) => {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user != null || store.getters.user){
+      if (checkAuth){
         store.commit('SET_USER', user)
       }
       else {
+        store.commit('RESET_USER', user)
         onFail()
       }
       resolve(user)
@@ -91,3 +92,6 @@ export const authUser = (onFail) => {
   })
 }
 
+export const checkAuth = () => {
+  return user != null || store.getters.user
+}

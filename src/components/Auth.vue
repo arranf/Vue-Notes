@@ -11,9 +11,10 @@
 <script>
   import firebase from 'firebase'
   import firebaseui from 'firebaseui'
+  import router from 'src/router'
+  import { authUser } from 'src/vuex/actions'
 
   const uiConfig = {
-    signInSuccessUrl: '/app',
     signInOptions: [
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
 //      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
@@ -22,14 +23,21 @@
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
     ],
     tosUrl: '/tos',
+    callbacks: {
+      signInSuccess: function(currentUser, credential, redirectUrl) {
+        router.push('/app')
+        return false
+      }
+    }
+
   }
 
   export default {
     name: 'auth',
-    mounted() {
+    beforeMount () {
       this.ui = new firebaseui.auth.AuthUI(firebase.auth())
-      firebase.auth().onAuthStateChanged(user => this.$store.commit('SET_USER', user))
-      this.ui.start('#firebaseui-auth-container', uiConfig)
+      authUser(this.ui.start('#firebaseui-auth-container', uiConfig))
+
     },
     destroyed() {
       this.ui.reset()
