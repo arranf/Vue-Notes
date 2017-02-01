@@ -12,7 +12,6 @@ export const TOGGLE_FAVOURITE_VIEW = (state) => {
 }
 
 export const SET_USER = (state, user) => {
-  // console.log(user)
   state.user = user
 }
 
