@@ -37,10 +37,6 @@
     beforeMount () {
       this.ui = new firebaseui.auth.AuthUI(firebase.auth())
       authUser(this.ui.start('#firebaseui-auth-container', uiConfig))
-
-    },
-    destroyed() {
-      this.ui.reset()
     }
   }
 </script>
