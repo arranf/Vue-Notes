@@ -9,7 +9,7 @@ import Auth from './components/Auth'
 import {authUser} from './vuex/actions'
 
 const router = new VueRouter({
-  mode: 'hash',
+  mode: 'history',
   routes: [
     { path: '/', component: Auth },
     { path: '/app', component: App, beforeEnter: (to, from, next) => {
