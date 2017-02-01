@@ -5,8 +5,13 @@ import firebase from 'firebase'
 
 import {notesRef} from '../firebase/firebase-config'
 
-export const editNote = ({ commit}, e) => {
-    commit('EDIT_NOTE', e.target.value)
+export const editNote = (context, e) => {
+  let updatedNote = {
+    text: e.target.value,
+    favourite: context.getters.activeNote.favourite
+  }
+  notesRef.child(context.getters.activeNote['.key']).update(updatedNote).then(
+    context.commit('FIND_ACTIVE_NOTE',context.getters.activeNote['.key']))
 }
 
 export const updateActiveNote = ({ commit }, note) => {

@@ -10,16 +10,17 @@
 
 <script>
 import { mapActions } from 'vuex'
+import debounce from 'lodash/debounce';
 
 export default {
     methods: {
          ...mapActions(['editNote', 'addNote']),
-         updateNote(event) {
-             if (this.$store.state.notes.length === 0){
-                this.addNote()
-             }
-             this.editNote(event)
-         }
+      updateNote: debounce(function (event) {
+        if (this.$store.state.notes.length === 0){
+          this.addNote()
+        }
+        this.editNote(event)
+      }, 150)
     },
     computed: {
         activeNote() {
