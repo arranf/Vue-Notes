@@ -13,7 +13,7 @@
   import firebaseui from 'firebaseui'
 
   const uiConfig = {
-    signInSuccessUrl: '/#/app',
+    signInSuccessUrl: '/app',
     signInOptions: [
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
 //      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
@@ -21,7 +21,7 @@
 //      firebase.auth.GithubAuthProvider.PROVIDER_ID,
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
     ],
-    tosUrl: '/#/tos',
+    tosUrl: '/tos',
   }
 
   export default {
